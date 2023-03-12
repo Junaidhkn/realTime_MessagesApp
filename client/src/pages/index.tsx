@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Homepage: NextPage = () => {
 	const { data, status } = useSession();
@@ -7,8 +7,17 @@ const Homepage: NextPage = () => {
 	console.log('status', status);
 	return (
 		<>
-			<h1>Login</h1>
-			<button onClick={() => signIn('google')}>SignIn</button>
+			{data?.user ? (
+				<>
+					<h1>{data?.user.name}</h1>
+					<button onClick={() => signOut()}>SignOut</button>
+				</>
+			) : (
+				<>
+					<h1>Login</h1>
+					<button onClick={() => signIn('google')}>SignIn</button>
+				</>
+			)}
 		</>
 	);
 };
